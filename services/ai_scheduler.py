@@ -1,12 +1,29 @@
 import json
+import os
 
-from config import client
 from services.schedule_logic.conflicts import  has_time_conflict
 from services.schedule_logic.ai_helpers import compact_candidate
 from utils.normalize import normalize
 
 
+def get_openai_client():
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        return None
+
+    try:
+        from openai import OpenAI
+    except ImportError:
+        return None
+
+    return OpenAI(api_key=api_key)
+
+
 def choose_schedule_with_ai(student_profile, candidates, max_classes=5):
+    client = get_openai_client()
+    if client is None:
+        return []
+
     compact_candidates = [compact_candidate(c) for c in candidates]
 
     system_prompt = """

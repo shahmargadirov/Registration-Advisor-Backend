@@ -6,6 +6,9 @@ from routes.swap import router as swap_router
 from routes.confirm import router as confirm_router
 from services.wp_api import get_all_classes
 
+# The app runs without OpenAI. Scheduling uses local rules by default.
+# If OPENAI_API_KEY is set later, /upload can optionally use AI.
+
 app = FastAPI()# This is your server instance
 app.include_router(upload_router)# This connects /upload to your app
 app.include_router(schedule_upload_router)

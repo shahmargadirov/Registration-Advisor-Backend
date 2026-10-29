@@ -1,14 +1,8 @@
-import os
 from pathlib import Path#paths is a modern way to work with filepaths
 from dotenv import load_dotenv#this laods environment variable form .env file
-from openai import OpenAI
 
 
 load_dotenv()# This loads variable from the .en file into your environment
-
-client = OpenAI(#your conneciton to OpenAI server
-    api_key=os.getenv("OPENAI_API_KEY")#gets your api from the environment variable
-)
 
 PAGES_DIR = Path("/Users/ace/Desktop/Registration Advisor(Randi)/Registration Advisor(Randi)/pages")#creates a path object point to your pages folder
 

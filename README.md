@@ -14,7 +14,7 @@ uvicorn main:app --reload
 
 ```text
 main.py                         Starts FastAPI and connects routes
-config.py                       OpenAI client, dotenv, JSON file paths
+config.py                       dotenv, JSON file paths
 state.py                        Shared candidates_store for swaps
 
 routes/upload.py                /upload Degree Works PDF endpoint
@@ -27,7 +27,7 @@ services/section_loader.py      Loads JSON schedule files and builds section obj
 services/ucc.py                 UCC area detection and UCC requirement parsing
 services/course_rules.py        Prerequisite/restriction/major logic
 services/schedule_logic.py      Time conflicts, swaps, filling schedules
-services/ai_scheduler.py        OpenAI schedule picking
+services/ai_scheduler.py        Optional OpenAI schedule picking (skipped without a key)
 
 data/prereqs.py                 Your manual prerequisite/restriction dictionary
 

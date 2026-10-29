@@ -5,7 +5,7 @@ from fastapi import APIRouter, Request# APIRouter lets you creat endpoints. Requ
 import state# review state file
 from config import FALL_FILES#List of json files
 from data.prereqs import PREREQS#Dictionary of prerequisites
-from services.ai_scheduler import choose_schedule_with_ai# your gonna call openAi to pick best schedule
+from services.ai_scheduler import choose_schedule_with_ai# optional; unused unless OPENAI_API_KEY is set
 from services.course_rules import (
     candidate_type_for_course,# checks course type
     prereqs_satisfied,# checks prereqs
@@ -256,13 +256,16 @@ async def upload_pdf(request: Request):
         },
     }
 
-    final_schedule = choose_schedule_with_ai(
-        student_profile_for_ai,
-        ordered_candidates,#send possible classes
-        max_classes=5,
-    )
+    try:
+        final_schedule = choose_schedule_with_ai(
+            student_profile_for_ai,
+            ordered_candidates,#send possible classes
+            max_classes=5,
+        )
+    except Exception:
+        final_schedule = []
 
-    if not final_schedule:  # if ai returns an empty list or None use the fallback
+    if not final_schedule:  # no OpenAI key, or AI returned nothing — use local builder
         final_schedule = pick_schedule(ordered_candidates, ucc_area_remaining)
     else:
         final_schedule = fill_remaining_schedule(final_schedule, ordered_candidates, # I NEED THIS LINE
